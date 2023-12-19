@@ -1,7 +1,12 @@
 <template>
   <div>
-    <post-form @create="createPost"/>
-    <post-list :posts="posts"/>
+    <h1>Страница с постами</h1>
+    <ButtonBase @click="showDialog">Create Post</ButtonBase>
+    <DialogBase v-model:show="dialogShow">
+      <post-form @create="createPost"/>
+
+    </DialogBase>
+    <post-list :posts="posts" @remove="removePost"/>
   </div>
 
 </template>
@@ -9,9 +14,11 @@
 <script lang="ts">
 import postForm from '@/components/postForm.vue';
 import postList from '@/components/postList.vue';
+import ButtonBase from "@/components/UI/Button.vue";
 
 export default {
   components: {
+    ButtonBase,
     postForm, postList
   },
   data() {
@@ -22,11 +29,19 @@ export default {
         {id: 3, title: 'Some title 3', body: "Some description 3"},
         {id: 4, title: 'Some title 4', body: "Some description 4"},
       ],
+      dialogShow: false
     }
   },
   methods: {
     createPost(post) {
       this.posts.push(post)
+      this.dialogShow = false
+    },
+    removePost(post) {
+      this.posts = this.posts.filter((postItem) => postItem.id !== post.id)
+    },
+    showDialog() {
+      this.dialogShow = true
     }
   },
 

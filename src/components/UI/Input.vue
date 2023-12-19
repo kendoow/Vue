@@ -1,11 +1,19 @@
 <script lang="ts">
 export default {
-  name: 'InputBase'
+  name: 'InputBase',
+  props: {
+    modelValue: [String, Number]
+  },
+  methods: {
+    updateInput(event) {
+      this.$emit('update:modelValue', event.target.value)
+    }
+  }
 }
 </script>
 
 <template>
-  <input class="input" type="text"/>
+  <input class="input" type="text" :value="modelValue" @input="updateInput"/>
 </template>
 
 <style scoped>
